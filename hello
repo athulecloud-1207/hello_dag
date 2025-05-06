@@ -1,0 +1,25 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+
+# Define the function that will be used in the task
+def print_hello():
+    print("Hello from Airflow!")
+
+# Define the DAG
+with DAG(
+    dag_id='simple_hello_dag',
+    start_date=datetime(2025, 1, 1),
+    schedule_interval='@daily',
+    catchup=False,
+    tags=['example']
+) as dag:
+
+    # Define the task
+    hello_task = PythonOperator(
+        task_id='say_hello',
+        python_callable=print_hello
+    )
+
+    # Define task dependencies (in this case, only one task)
+    hello_task
